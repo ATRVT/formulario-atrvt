@@ -16,6 +16,13 @@
         .status-indicator {
             animation: pulse 2s infinite;
         }
+        .programa-card {
+            transition: all 0.2s ease;
+        }
+        .programa-card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -81,12 +88,12 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Paciente</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Estudiante</label>
                     <select 
                         id="nombre" 
                         class="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 bg-white"
                     >
-                        <option value="">Seleccionar paciente</option>
+                        <option value="">Seleccionar estudiante</option>
                         <option value="Abraham Chapetón">Abraham Chapetón</option>
                         <option value="Adolfo Hernández">Adolfo Hernández</option>
                         <option value="Adrián">Adrián</option>
@@ -133,134 +140,22 @@
                 </div>
             </div>
 
-            <!-- Programa trabajado -->
+            <!-- Programas trabajados -->
             <div class="space-y-4">
-                <h2 class="text-lg font-medium text-gray-900 pb-2 border-b border-gray-100">
-                    Programa Trabajado
-                </h2>
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-medium text-gray-900 pb-2 border-b border-gray-100 flex-grow">
+                        Programas Trabajados
+                    </h2>
+                    <button 
+                        id="agregarPrograma" 
+                        class="ml-4 bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors"
+                    >
+                        + Agregar Programa
+                    </button>
+                </div>
                 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Programa</label>
-                    <input 
-                        type="text" 
-                        id="programa" 
-                        placeholder="Nombre del programa" 
-                        class="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200"
-                    >
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Conj/Nivel</label>
-                        <input 
-                            type="number" 
-                            id="conjNivel" 
-                            placeholder="1" 
-                            class="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200"
-                        >
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Elementos</label>
-                        <input 
-                            type="number" 
-                            id="elementos" 
-                            placeholder="20" 
-                            class="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200"
-                        >
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Ensayos correctos</label>
-                        <input 
-                            type="number" 
-                            id="ensayosPositivos" 
-                            placeholder="0" 
-                            class="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200"
-                        >
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1.5">Ensayos incorrectos</label>
-                        <input 
-                            type="number" 
-                            id="ensayosNegativos" 
-                            placeholder="0" 
-                            class="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200"
-                        >
-                    </div>
-                </div>
-
-                <!-- Resultado -->
-                <div id="resultado" class="bg-blue-50 border border-blue-200 rounded-md p-4 text-center" style="display:none">
-                    <div id="resultadoTexto" class="text-blue-800 font-medium"></div>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Tipo de ayuda</label>
-                    <select 
-                        id="tipoAyuda" 
-                        class="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 bg-white"
-                    >
-                        <option value="">Seleccionar</option>
-                        <option value="Ninguna">Ninguna</option>
-                        <option value="Verbal">Verbal</option>
-                        <option value="Gestual">Gestual</option>
-                        <option value="Física parcial">Física parcial</option>
-                        <option value="Física total">Física total</option>
-                        <option value="Física sombra">Física sombra</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Tipo de reforzador</label>
-                    <select 
-                        id="tipoReforzador" 
-                        class="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 bg-white"
-                    >
-                        <option value="">Seleccionar</option>
-                        <option value="Comestible">Comestible</option>
-                        <option value="Sensorial">Sensorial</option>
-                        <option value="Social">Social</option>
-                        <option value="Tangible">Tangible</option>
-                        <option value="Economía">Economía</option>
-                        <option value="Actividad">Actividad</option>
-                        <option value="Prueba/Test">Prueba/Test</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de reforzamiento</label>
-                    <div class="flex gap-6">
-                        <label class="flex items-center cursor-pointer">
-                            <input 
-                                type="radio" 
-                                name="tipoReforzamiento" 
-                                value="Continuo" 
-                                class="mr-2 text-blue-600 focus:ring-blue-500"
-                            >
-                            <span class="text-sm text-gray-700">Continuo</span>
-                        </label>
-                        <label class="flex items-center cursor-pointer">
-                            <input 
-                                type="radio" 
-                                name="tipoReforzamiento" 
-                                value="Variable" 
-                                class="mr-2 text-blue-600 focus:ring-blue-500"
-                            >
-                            <span class="text-sm text-gray-700">Variable</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Comentarios</label>
-                    <textarea 
-                        id="comentario" 
-                        placeholder="Observaciones de la sesión..." 
-                        rows="3" 
-                        class="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 resize-none"
-                    ></textarea>
+                <div id="programasContainer" class="space-y-4">
+                    <!-- Los programas se agregan aquí dinámicamente -->
                 </div>
             </div>
 
@@ -279,119 +174,471 @@
                 <span id="statusText" class="text-xs text-gray-500">Sistema listo</span>
             </div>
         </div>
+
+        <!-- Panel de configuración -->
+        <div class="mt-6 bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Configuración</h3>
+            <div class="space-y-3">
+                <button id="configurarTerapeutas" class="w-full text-left px-4 py-2 bg-gray-50 rounded hover:bg-gray-100 transition-colors text-sm">
+                    📋 Gestionar Terapeutas
+                </button>
+                <button id="configurarEstudiantes" class="w-full text-left px-4 py-2 bg-gray-50 rounded hover:bg-gray-100 transition-colors text-sm">
+                    👥 Gestionar Estudiantes
+                </button>
+                <button id="configurarProgramas" class="w-full text-left px-4 py-2 bg-gray-50 rounded hover:bg-gray-100 transition-colors text-sm">
+                    📚 Gestionar Programas
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de configuración -->
+    <div id="configModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4" style="z-index: 1000;">
+        <div class="bg-white rounded-lg max-w-md w-full p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="modalTitle" class="text-lg font-medium text-gray-900"></h3>
+                <button id="cerrarModal" class="text-gray-400 hover:text-gray-600">✕</button>
+            </div>
+            <div id="modalContent" class="space-y-3">
+                <!-- Contenido dinámico -->
+            </div>
+            <div class="mt-6 flex gap-3">
+                <button id="guardarConfig" class="flex-1 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition-colors">
+                    Guardar
+                </button>
+                <button id="cancelarConfig" class="flex-1 bg-gray-300 text-gray-700 py-2 px-4 rounded hover:bg-gray-400 transition-colors">
+                    Cancelar
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
+        // Datos configurables
+        let config = {
+            programas: [
+                "Atención Visual y Seguimiento de Instrucciones",
+                "Autonomía Personal y Hábitos de Higiene",
+                "Comunicación Funcional y Expresiva",
+                "Conductas Disruptivas y Autorregulación",
+                "Coordinación Motriz y Psicomotricidad",
+                "Desarrollo Cognitivo y Resolución de Problemas",
+                "Habilidades Académicas Básicas",
+                "Habilidades de Imitación y Modelado",
+                "Habilidades Preacadémicas",
+                "Habilidades Sociales y de Interacción",
+                "Integración Sensorial",
+                "Lenguaje Expresivo y Comprensivo",
+                "Motricidad Fina y Coordinación Manual",
+                "Tolerancia y Seguimiento de Rutinas"
+            ],
+            terapeutas: ["Adriana J", "Celeste M", "Cinthia", "Dani R", "Estefanie", "Gaby A", "Gaby X", "Geovanna", "Jacky S", "Jessi G", "Jessica P", "Luisa D", "Melissa P", "Meli Peña", "Paty", "Rocío M", "Suly S", "Tere M", "Zamy"],
+            estudiantes: ["Abraham Chapetón", "Adolfo Hernández", "Adrián", "Adriana García", "Amber Lafage", "Ana María", "Andrei González", "Andrés Cruz", "Ángel Gabriel", "Ángel Gudiel", "Bruno Arévalo", "Bruno Torres", "Christopher Gamas", "Cristian Molina", "Daniel Samayoa", "Diego Lima", "Diego Pérez", "Dylan Ceijas", "Ethan Forno", "Fabián Álvarez", "Gabriel Ruíz", "Ivanna Recinos", "Javier Maldonado", "Jorge Sánchez", "José Miguel López", "Julio González", "Luis André Arriola", "Luis Felipe Guzmán", "Mariana Solís", "Mateo Toribio", "Mathías Mendoza", "Matías Contreras", "Matías Guaré", "Matías Osorio", "Miranda Martínez", "Nicholas Mancilla", "Pablo Vielman", "René Torres", "Rodrigo Chigüichon", "Santiago Ruíz", "Tier Xitumul", "Xander García"]
+        };
+
+        // Cargar configuración desde localStorage
+        function cargarConfig() {
+            try {
+                const configGuardada = localStorage.getItem('atrvt_config');
+                if (configGuardada) {
+                    config = { ...config, ...JSON.parse(configGuardada) };
+                }
+            } catch (e) {
+                console.log('Config por defecto');
+            }
+        }
+
+        // Guardar configuración
+        function guardarConfig() {
+            try {
+                localStorage.setItem('atrvt_config', JSON.stringify(config));
+            } catch (e) {
+                console.log('No se pudo guardar config');
+            }
+        }
+
+        // Variables globales
+        let programasAgregados = [];
+        let contadorProgramas = 0;
+
         // Elementos del DOM
         const fechaInput = document.getElementById('fecha');
         const terapeutaSelect = document.getElementById('terapeuta');
         const nombreSelect = document.getElementById('nombre');
-        const programaInput = document.getElementById('programa');
-        const conjNivelInput = document.getElementById('conjNivel');
-        const elementosInput = document.getElementById('elementos');
-        const ensayosPositivosInput = document.getElementById('ensayosPositivos');
-        const ensayosNegativosInput = document.getElementById('ensayosNegativos');
-        const tipoAyudaSelect = document.getElementById('tipoAyuda');
-        const tipoReforzadorSelect = document.getElementById('tipoReforzador');
-        const comentarioTextarea = document.getElementById('comentario');
+        const programasContainer = document.getElementById('programasContainer');
+        const agregarProgramaBtn = document.getElementById('agregarPrograma');
         const guardarBtn = document.getElementById('guardarBtn');
-        const resultadoDiv = document.getElementById('resultado');
-        const resultadoTexto = document.getElementById('resultadoTexto');
         const statusText = document.getElementById('statusText');
+
+        // Modal
+        const configModal = document.getElementById('configModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+        const cerrarModal = document.getElementById('cerrarModal');
+        const guardarConfigBtn = document.getElementById('guardarConfig');
+        const cancelarConfigBtn = document.getElementById('cancelarConfig');
 
         // Funciones
         function inicializar() {
+            cargarConfig();
             fechaInput.value = new Date().toISOString().split('T')[0];
+            actualizarSelects();
+            agregarPrograma(); // Agregar un programa por defecto
         }
 
-        function calcularResultados() {
-            const positivos = parseInt(ensayosPositivosInput.value) || 0;
-            const negativos = parseInt(ensayosNegativosInput.value) || 0;
+        function actualizarSelects() {
+            // Actualizar terapeutas
+            terapeutaSelect.innerHTML = '<option value="">Seleccionar terapeuta</option>';
+            config.terapeutas.forEach(terapeuta => {
+                const option = document.createElement('option');
+                option.value = terapeuta;
+                option.textContent = terapeuta;
+                terapeutaSelect.appendChild(option);
+            });
+
+            // Actualizar estudiantes
+            nombreSelect.innerHTML = '<option value="">Seleccionar estudiante</option>';
+            config.estudiantes.forEach(estudiante => {
+                const option = document.createElement('option');
+                option.value = estudiante;
+                option.textContent = estudiante;
+                nombreSelect.appendChild(option);
+            });
+        }
+
+        function agregarPrograma() {
+            contadorProgramas++;
+            const programaId = `programa_${contadorProgramas}`;
+            
+            const programaDiv = document.createElement('div');
+            programaDiv.className = 'bg-gray-50 rounded-lg p-4 programa-card border';
+            programaDiv.id = programaId;
+
+            programaDiv.innerHTML = `
+                <div class="flex justify-between items-center mb-3">
+                    <h4 class="font-medium text-gray-900">Programa ${contadorProgramas}</h4>
+                    <button onclick="eliminarPrograma('${programaId}')" class="text-red-500 hover:text-red-700 text-sm">✕</button>
+                </div>
+                
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Programa</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 bg-white programa-select">
+                            <option value="">Seleccionar programa</option>
+                            ${config.programas.map(programa => `<option value="${programa}">${programa}</option>`).join('')}
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Conj/Nivel</label>
+                            <input type="number" placeholder="1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 conjnivel-input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Elementos</label>
+                            <input type="number" placeholder="20" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 elementos-input">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Ensayos correctos</label>
+                            <input type="number" placeholder="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 positivos-input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Ensayos incorrectos</label>
+                            <input type="number" placeholder="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 negativos-input">
+                        </div>
+                    </div>
+
+                    <div class="resultado bg-blue-50 border border-blue-200 rounded-md p-3 text-center hidden">
+                        <div class="resultado-texto text-blue-800 font-medium"></div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de ayuda</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 bg-white ayuda-select">
+                                <option value="">Seleccionar</option>
+                                <option value="Ninguna">Ninguna</option>
+                                <option value="Verbal">Verbal</option>
+                                <option value="Gestual">Gestual</option>
+                                <option value="Física parcial">Física parcial</option>
+                                <option value="Física total">Física total</option>
+                                <option value="Física sombra">Física sombra</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de reforzador</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 bg-white reforzador-select">
+                                <option value="">Seleccionar</option>
+                                <option value="Comestible">Comestible</option>
+                                <option value="Sensorial">Sensorial</option>
+                                <option value="Social">Social</option>
+                                <option value="Tangible">Tangible</option>
+                                <option value="Economía">Economía</option>
+                                <option value="Actividad">Actividad</option>
+                                <option value="Prueba/Test">Prueba/Test</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de reforzamiento</label>
+                        <div class="flex gap-6">
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Continuo" class="mr-2 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">Continuo</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Variable" class="mr-2 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">Variable</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tiempo colegio (min)</label>
+                            <input type="number" placeholder="30" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 tiempo-colegio-input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tiempo papás (min)</label>
+                            <input type="number" placeholder="15" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 tiempo-papas-input">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Comportamiento relevante</label>
+                        <textarea placeholder="Describir comportamientos relevantes..." rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 resize-none comportamiento-textarea"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Comentarios</label>
+                        <textarea placeholder="Observaciones del programa..." rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 resize-none comentario-textarea"></textarea>
+                    </div>
+                </div>
+            `;
+
+            programasContainer.appendChild(programaDiv);
+
+            // Agregar event listeners para calcular resultados
+            const positivosInput = programaDiv.querySelector('.positivos-input');
+            const negativosInput = programaDiv.querySelector('.negativos-input');
+            
+            positivosInput.addEventListener('input', () => calcularResultados(programaDiv));
+            negativosInput.addEventListener('input', () => calcularResultados(programaDiv));
+        }
+
+        function eliminarPrograma(programaId) {
+            if (programasContainer.children.length > 1) {
+                document.getElementById(programaId).remove();
+            } else {
+                alert('Debe mantener al menos un programa');
+            }
+        }
+
+        function calcularResultados(programaDiv) {
+            const positivos = parseInt(programaDiv.querySelector('.positivos-input').value) || 0;
+            const negativos = parseInt(programaDiv.querySelector('.negativos-input').value) || 0;
             const total = positivos + negativos;
+            const resultadoDiv = programaDiv.querySelector('.resultado');
+            const resultadoTexto = programaDiv.querySelector('.resultado-texto');
             
             if (total > 0) {
                 const porcentaje = Math.round((positivos / total) * 100);
-                resultadoTexto.textContent = `${total} ensayos totales • ${porcentaje}% de aciertos`;
-                resultadoDiv.style.display = 'block';
+                resultadoTexto.textContent = `${total} ensayos • ${porcentaje}% aciertos`;
+                resultadoDiv.classList.remove('hidden');
                 
                 // Cambiar color según resultado
                 if (porcentaje >= 80) {
-                    resultadoDiv.className = 'bg-green-50 border border-green-200 rounded-md p-4 text-center';
-                    resultadoTexto.className = 'text-green-800 font-medium';
+                    resultadoDiv.className = 'resultado bg-green-50 border border-green-200 rounded-md p-3 text-center';
+                    resultadoTexto.className = 'resultado-texto text-green-800 font-medium';
                 } else if (porcentaje >= 60) {
-                    resultadoDiv.className = 'bg-yellow-50 border border-yellow-200 rounded-md p-4 text-center';
-                    resultadoTexto.className = 'text-yellow-800 font-medium';
+                    resultadoDiv.className = 'resultado bg-yellow-50 border border-yellow-200 rounded-md p-3 text-center';
+                    resultadoTexto.className = 'resultado-texto text-yellow-800 font-medium';
                 } else {
-                    resultadoDiv.className = 'bg-red-50 border border-red-200 rounded-md p-4 text-center';
-                    resultadoTexto.className = 'text-red-800 font-medium';
+                    resultadoDiv.className = 'resultado bg-red-50 border border-red-200 rounded-md p-3 text-center';
+                    resultadoTexto.className = 'resultado-texto text-red-800 font-medium';
                 }
             } else {
-                resultadoDiv.style.display = 'none';
+                resultadoDiv.classList.add('hidden');
             }
         }
 
-        function limpiarFormulario() {
-            programaInput.value = '';
-            conjNivelInput.value = '';
-            elementosInput.value = '';
-            ensayosPositivosInput.value = '';
-            ensayosNegativosInput.value = '';
-            tipoAyudaSelect.value = '';
-            tipoReforzadorSelect.value = '';
-            comentarioTextarea.value = '';
-            document.querySelectorAll('input[name="tipoReforzamiento"]').forEach(radio => radio.checked = false);
-            resultadoDiv.style.display = 'none';
+        function recopilarProgramas() {
+            const programas = [];
+            const programaDivs = programasContainer.querySelectorAll('.programa-card');
+            
+            programaDivs.forEach((div, index) => {
+                const tipoReforzamiento = div.querySelector(`input[name^="tipoReforzamiento"]:checked`);
+                
+                const programa = {
+                    id: Date.now() + index,
+                    programa: div.querySelector('.programa-select').value,
+                    conjNivel: div.querySelector('.conjnivel-input').value,
+                    elementos: div.querySelector('.elementos-input').value,
+                    ensayosPositivos: div.querySelector('.positivos-input').value,
+                    ensayosNegativos: div.querySelector('.negativos-input').value,
+                    tiposAyuda: [div.querySelector('.ayuda-select').value],
+                    tiposReforzador: [div.querySelector('.reforzador-select').value],
+                    tipoReforzamiento: tipoReforzamiento ? tipoReforzamiento.value : '',
+                    tiempoColegio: div.querySelector('.tiempo-colegio-input').value,
+                    tiempoEntrenamientoPapas: div.querySelector('.tiempo-papas-input').value,
+                    comportamientoRelevante: div.querySelector('.comportamiento-textarea').value,
+                    comentario: div.querySelector('.comentario-textarea').value
+                };
+                
+                programas.push(programa);
+            });
+            
+            return programas;
         }
 
         function validarFormulario() {
-            if (!fechaInput.value || !terapeutaSelect.value || !nombreSelect.value || 
-                !programaInput.value || !conjNivelInput.value || !elementosInput.value ||
-                ensayosPositivosInput.value === '' || ensayosNegativosInput.value === '' ||
-                !tipoAyudaSelect.value || !tipoReforzadorSelect.value) {
-                alert('Por favor complete todos los campos requeridos');
+            if (!fechaInput.value || !terapeutaSelect.value || !nombreSelect.value) {
+                alert('Por favor complete fecha, terapeuta y estudiante');
                 return false;
             }
 
-            const tipoReforzamiento = document.querySelector('input[name="tipoReforzamiento"]:checked');
-            if (!tipoReforzamiento) {
-                alert('Por favor seleccione el tipo de reforzamiento');
-                return false;
+            const programas = recopilarProgramas();
+            for (let i = 0; i < programas.length; i++) {
+                const prog = programas[i];
+                if (!prog.programa || !prog.conjNivel || !prog.elementos || 
+                    prog.ensayosPositivos === '' || prog.ensayosNegativos === '' ||
+                    !prog.tiposAyuda[0] || !prog.tiposReforzador[0] || !prog.tipoReforzamiento) {
+                    alert(`Por favor complete todos los campos del Programa ${i + 1}`);
+                    return false;
+                }
             }
 
             return true;
         }
 
+        function limpiarFormulario() {
+            // Limpiar datos básicos (mantener fecha, terapeuta y estudiante)
+            
+            // Eliminar todos los programas excepto el primero
+            const programaDivs = programasContainer.querySelectorAll('.programa-card');
+            for (let i = 1; i < programaDivs.length; i++) {
+                programaDivs[i].remove();
+            }
+            
+            // Limpiar el primer programa
+            const primerPrograma = programasContainer.querySelector('.programa-card');
+            primerPrograma.querySelector('.programa-select').value = '';
+            primerPrograma.querySelector('.conjnivel-input').value = '';
+            primerPrograma.querySelector('.elementos-input').value = '';
+            primerPrograma.querySelector('.positivos-input').value = '';
+            primerPrograma.querySelector('.negativos-input').value = '';
+            primerPrograma.querySelector('.ayuda-select').value = '';
+            primerPrograma.querySelector('.reforzador-select').value = '';
+            primerPrograma.querySelector('.tiempo-colegio-input').value = '';
+            primerPrograma.querySelector('.tiempo-papas-input').value = '';
+            primerPrograma.querySelector('.comportamiento-textarea').value = '';
+            primerPrograma.querySelector('.comentario-textarea').value = '';
+            primerPrograma.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+            primerPrograma.querySelector('.resultado').classList.add('hidden');
+        }
+
+        // Gestión de configuración
+        function abrirConfigModal(tipo) {
+            modalTitle.textContent = `Gestionar ${tipo}`;
+            modalContent.innerHTML = '';
+            
+            let items = [];
+            let configKey = '';
+            
+            switch(tipo) {
+                case 'Terapeutas':
+                    items = config.terapeutas;
+                    configKey = 'terapeutas';
+                    break;
+                case 'Estudiantes':
+                    items = config.estudiantes;
+                    configKey = 'estudiantes';
+                    break;
+                case 'Programas':
+                    items = config.programas;
+                    configKey = 'programas';
+                    break;
+            }
+            
+            modalContent.innerHTML = `
+                <div class="space-y-3">
+                    <div class="flex gap-2">
+                        <input type="text" id="nuevoItem" placeholder="Agregar nuevo ${tipo.slice(0, -1).toLowerCase()}" 
+                               class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus">
+                        <button id="agregarItem" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">+</button>
+                    </div>
+                    <div class="max-h-60 overflow-y-auto space-y-2" id="listaItems">
+                        ${items.map((item, index) => `
+                            <div class="flex items-center justify-between bg-gray-50 px-3 py-2 rounded">
+                                <span class="text-sm">${item}</span>
+                                <button onclick="eliminarItem(${index}, '${configKey}')" class="text-red-500 hover:text-red-700 text-sm">✕</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            configModal.classList.remove('hidden');
+            configModal.classList.add('flex');
+            
+            // Event listener para agregar item
+            document.getElementById('agregarItem').onclick = () => agregarItem(configKey);
+            document.getElementById('nuevoItem').onkeypress = (e) => {
+                if (e.key === 'Enter') agregarItem(configKey);
+            };
+        }
+
+        function agregarItem(configKey) {
+            const input = document.getElementById('nuevoItem');
+            const nuevoItem = input.value.trim();
+            
+            if (nuevoItem && !config[configKey].includes(nuevoItem)) {
+                config[configKey].push(nuevoItem);
+                input.value = '';
+                actualizarListaItems(configKey);
+            }
+        }
+
+        function eliminarItem(index, configKey) {
+            config[configKey].splice(index, 1);
+            actualizarListaItems(configKey);
+        }
+
+        function actualizarListaItems(configKey) {
+            const listaItems = document.getElementById('listaItems');
+            const items = config[configKey];
+            
+            listaItems.innerHTML = items.map((item, index) => `
+                <div class="flex items-center justify-between bg-gray-50 px-3 py-2 rounded">
+                    <span class="text-sm">${item}</span>
+                    <button onclick="eliminarItem(${index}, '${configKey}')" class="text-red-500 hover:text-red-700 text-sm">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function cerrarConfigModal() {
+            configModal.classList.add('hidden');
+            configModal.classList.remove('flex');
+        }
+
         // Event Listeners
-        ensayosPositivosInput.addEventListener('input', calcularResultados);
-        ensayosNegativosInput.addEventListener('input', calcularResultados);
+        agregarProgramaBtn.addEventListener('click', agregarPrograma);
 
         guardarBtn.addEventListener('click', async function() {
             if (!validarFormulario()) return;
 
-            const tipoReforzamiento = document.querySelector('input[name="tipoReforzamiento"]:checked');
+            const programas = recopilarProgramas();
             
-            const programa = {
-                id: Date.now(),
-                programa: programaInput.value,
-                conjNivel: conjNivelInput.value,
-                elementos: elementosInput.value,
-                ensayosPositivos: ensayosPositivosInput.value,
-                ensayosNegativos: ensayosNegativosInput.value,
-                tiposAyuda: [tipoAyudaSelect.value],
-                tiposReforzador: [tipoReforzadorSelect.value],
-                tipoReforzamiento: tipoReforzamiento.value,
-                tiempoColegio: '',
-                tiempoEntrenamientoPapas: '',
-                comportamientoRelevante: '',
-                comentario: comentarioTextarea.value
-            };
-
             const sesion = {
                 id: Date.now(),
                 fecha: fechaInput.value,
                 terapeuta: terapeutaSelect.value,
                 nombre: nombreSelect.value,
-                programas: [programa]
+                programas: programas
             };
 
             const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwMXhSh10UNE2hohfjAnqDhNClKKOepQPAOyHbYPAt6kE_fvCrePSYmYxQvkOC-VnSS/exec';
@@ -425,6 +672,32 @@
                 guardarBtn.disabled = false;
             }
         });
+
+        // Event listeners del modal
+        document.getElementById('configurarTerapeutas').addEventListener('click', () => abrirConfigModal('Terapeutas'));
+        document.getElementById('configurarEstudiantes').addEventListener('click', () => abrirConfigModal('Estudiantes'));
+        document.getElementById('configurarProgramas').addEventListener('click', () => abrirConfigModal('Programas'));
+
+        cerrarModal.addEventListener('click', cerrarConfigModal);
+        cancelarConfigBtn.addEventListener('click', cerrarConfigModal);
+
+        guardarConfigBtn.addEventListener('click', () => {
+            guardarConfig();
+            actualizarSelects();
+            cerrarConfigModal();
+            alert('Configuración guardada correctamente');
+        });
+
+        // Cerrar modal al hacer clic fuera
+        configModal.addEventListener('click', (e) => {
+            if (e.target === configModal) {
+                cerrarConfigModal();
+            }
+        });
+
+        // Hacer eliminarItem global para que funcione desde el HTML
+        window.eliminarItem = eliminarItem;
+        window.eliminarPrograma = eliminarPrograma;
 
         // Inicializar
         inicializar();
