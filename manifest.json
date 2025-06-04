@@ -1,0 +1,25 @@
+{
+  "name": "ATRVT - Formulario de Sesión",
+  "short_name": "ATRVT",
+  "description": "Aplicación para registro de sesiones terapéuticas ATRVT",
+  "start_url": "/formulario-atrvt/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "orientation": "portrait",
+  "scope": "/formulario-atrvt/",
+  "icons": [
+    {
+      "src": "icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ]
+}
