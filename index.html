@@ -3,7 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario ATRVT</title>
+    <meta name="theme-color" content="#2563eb">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ATRVT">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+    <title>ATRVT - Formulario de Sesión</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -255,16 +261,15 @@
                 "Tactos situaciones", "Tactos varios", "Tiempo Colegio", "Toma de perspectiva", "Tracking visual"
             ],
             terapeutas: ["Adriana J", "Celeste M", "Cinthia", "Dani R", "Estefanie", "Gaby A", "Gaby X", "Geovanna", "Jacky S", "Jessi G", "Jessica P", "Luisa D", "Melissa P", "Meli Peña", "Paty", "Rocío M", "Suly S", "Tere M", "Zamy"],
-            estudiantes: ["Abraham Chapetón", "Adolfo Hernández", "Adrián", "Adriana García", "Amber Lafage", "Ana María", "Andrei González", "Andrés Cruz", "Ángel Gabriel", "Ángel Gudiel", "Bruno Arévalo", "Bruno Torres", "Christopher Gamas", "Cristian Molina", "Daniel Samayoa", "Diego Lima", "Diego Pérez", "Dylan Ceijas", "Ethan Forno", "Fabián Álvarez", "Gabriel Ruíz", "Ivanna Recinos", "Javier Maldonado", "Jorge Sánchez", "José Miguel López", "Julio González", "Luis André Arriola", "Luis Felipe Guzmán", "Mariana Solís", "Mateo Toribio", "Mathías Mendoza", "Matías Contreras", "Matías Guaré", "Matías Osorio", "Miranda Martínez", "Nicholas Mancilla", "Pablo Vielman", "René Torres", "Rodrigo Chigüichon", "Santiago Ruíz", "Tier Xitumul", "Xander García"]
+            estudiantes: ["Abraham Chapetón", "Adolfo Hernández", "Adrián", "Adriana García", "Amber Lafage", "Ana María", "Andrei González", "Andrés Cruz", "Ángel Gabriel", "Ángel Gudiel", "Bruno Arévalo", "Bruno Torres", "Christopher Gamas", "Cristian Molina", "Daniel Samayoa", "Diego Lima", "Diego Pérez", "Dylan Ceijas", "Ethan Forno", "Fabián Álvarez", "Gabriel Ruíz", "Ivanna Recinos", "Javier Maldonado", "Jorge Sánchez", "José Miguel López", "Julio González", "Luis André Arriola", "Luis Felipe Guzmán", "Mariana Solís", "Mateo Toribio", "Mathías Mendoza", "Matías Contreras", "Matías Guaré", "Matías Osorio", "Miranda Martínez", "Nicholas Mancilla", "Pablo Vielman", "René Torres", "Rodrigo Chigüichon", "Santiago Ruíz", "Tier Xitumul", "Xander García"],
+            tiposReforzamiento: ["Continuo", "Variable", "Prueba/Test"]
         };
 
         // Cargar configuración desde localStorage
         function cargarConfig() {
             try {
-                const configGuardada = localStorage.getItem('atrvt_config');
-                if (configGuardada) {
-                    config = { ...config, ...JSON.parse(configGuardada) };
-                }
+                const configGuardada = JSON.parse(localStorage.getItem('atrvt_config') || '{}');
+                config = { ...config, ...configGuardada };
             } catch (e) {
                 console.log('Config por defecto');
             }
@@ -416,6 +421,10 @@
                                 <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Variable" class="mr-2 text-blue-600 focus:ring-blue-500">
                                 <span class="text-sm text-gray-700">Variable</span>
                             </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Prueba/Test" class="mr-2 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">Prueba/Test</span>
+                            </label>
                         </div>
                     </div>
 
@@ -448,8 +457,10 @@
             const positivosInput = programaDiv.querySelector('.positivos-input');
             const negativosInput = programaDiv.querySelector('.negativos-input');
             
-            positivosInput.addEventListener('input', () => calcularResultados(programaDiv));
-            negativosInput.addEventListener('input', () => calcularResultados(programaDiv));
+            if (positivosInput && negativosInput) {
+                positivosInput.addEventListener('input', () => calcularResultados(programaDiv));
+                negativosInput.addEventListener('input', () => calcularResultados(programaDiv));
+            }
         }
 
         function eliminarPrograma(programaId) {
@@ -548,19 +559,22 @@
             
             // Limpiar el primer programa
             const primerPrograma = programasContainer.querySelector('.programa-card');
-            primerPrograma.querySelector('.programa-select').value = '';
-            primerPrograma.querySelector('.conjnivel-input').value = '';
-            primerPrograma.querySelector('.elementos-input').value = '';
-            primerPrograma.querySelector('.positivos-input').value = '';
-            primerPrograma.querySelector('.negativos-input').value = '';
-            primerPrograma.querySelector('.ayuda-select').value = '';
-            primerPrograma.querySelector('.reforzador-select').value = '';
-            primerPrograma.querySelector('.tiempo-colegio-input').value = '';
-            primerPrograma.querySelector('.tiempo-papas-input').value = '';
-            primerPrograma.querySelector('.comportamiento-textarea').value = '';
-            primerPrograma.querySelector('.comentario-textarea').value = '';
-            primerPrograma.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
-            primerPrograma.querySelector('.resultado').classList.add('hidden');
+            if (primerPrograma) {
+                primerPrograma.querySelector('.programa-select').value = '';
+                primerPrograma.querySelector('.conjnivel-input').value = '';
+                primerPrograma.querySelector('.elementos-input').value = '';
+                primerPrograma.querySelector('.positivos-input').value = '';
+                primerPrograma.querySelector('.negativos-input').value = '';
+                primerPrograma.querySelector('.ayuda-select').value = '';
+                primerPrograma.querySelector('.reforzador-select').value = '';
+                primerPrograma.querySelector('.tiempo-colegio-input').value = '';
+                primerPrograma.querySelector('.tiempo-papas-input').value = '';
+                primerPrograma.querySelector('.comportamiento-textarea').value = '';
+                primerPrograma.querySelector('.comentario-textarea').value = '';
+                primerPrograma.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+                const resultadoDiv = primerPrograma.querySelector('.resultado');
+                if (resultadoDiv) resultadoDiv.classList.add('hidden');
+            }
         }
 
         // Gestión de configuración
