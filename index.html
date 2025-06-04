@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario ATRVT</title>
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkZvcm11bGFyaW8gQVRSVlQiLAogICJzaG9ydF9uYW1lIjogIkFUUlZUIiwKICAiZGVzY3JpcHRpb24iOiAiUmVnaXN0cm8gZGUgU2VzaW9uZXMgVGVyYXDDqXV0aWNhcyIsCiAgInN0YXJ0X3VybCI6ICIuLyIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzJkNjNlZCIsCiAgInRoZW1lX2NvbG9yIjogIiMyZDYzZWQiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LEBIQnFhQUFBRElnNkRFUUFBQUJBQUFBQVFDQVlBQUFBZjR6VTJnQUFBR0NTVVJCVkZoSDdaOHhDb093akVOQkFBQWxJVGNEVWdKU2xnWk5iK2FIeVpkK2E3eC9PRE9TdGpobjFzQUFBTHRIQkFIU3ViU3NpT1ZGeFNYVGhObUtUZWFhQS9vYXBkeEVpNXZyNDFzQnNBZkFBTlN1M3Uwcm55YW9RaTNjdVJ2dDBWMjl1dWl2TVEyMGlPOU9CNzc2S0J3a2Zham8xUzNBSUFBQUVsRlRrU3VRbUNDIiwKICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9zdmcreG1sIgogICAgfQogIF0KfQ==">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        }
+        .install-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+            cursor: pointer;
+            z-index: 1000;
+            display: none;
+        }
+        .install-button:hover {
+            background: #059669;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <button id="installButton" class="install-button">📱 Instalar App</button>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const TherapySessionApp = () => {
+            const [isOnline, setIsOnline] = useState(navigator.onLine);
+            const [sessionData, setSessionData] = useState({
+                fecha: new Date().toISOString().split('T')[0],
+                terapeuta: '',
+                nombre: '',
+                programas: []
+            });
+            
+            const [savedSessions, setSavedSessions] = useState([]);
+
+            // Listas de datos del formulario original
+            const nombres = [
+                'Abraham Chapetón', 'Adolfo Hernández', 'Adrián', 'Adriana García', 'Amber Lafage',
+                'Ana María', 'Andrei González', 'Andrés Cruz', 'Ángel Gabriel', 'Ángel Gudiel',
+                'Bruno Arévalo', 'Bruno Torres', 'Christopher Gamas', 'Cristian Molina', 'Daniel Samayoa',
+                'Diego Lima', 'Diego Pérez', 'Dylan Ceijas', 'Ethan Forno', 'Fabián Álvarez',
+                'Gabriel Ruíz', 'Ivanna Recinos', 'Javier Maldonado', 'Jorge Sánchez', 'José Miguel López',
+                'Julio González', 'Luis André Arriola', 'Luis Felipe Guzmán', 'Mariana Solís', 'Mateo Toribio',
+                'Mathías Mendoza', 'Matías Contreras', 'Matías Guaré', 'Matías Osorio', 'Miranda Martínez',
+                'Nicholas Mancilla', 'Pablo Vielman', 'René Torres', 'Rodrigo Chigüichon', 'Santiago Ruíz',
+                'Tier Xitumul', 'Xander García'
+            ];
+
+            const terapeutas = [
+                'Adriana J', 'Celeste M', 'Cinthia', 'Dani R', 'Estefanie', 'Gaby A', 'Gaby X',
+                'Geovanna', 'Jacky S', 'Jessi G', 'Jessica P', 'Luisa D', 'Melissa P', 'Meli Peña',
+                'Paty', 'Rocío M', 'Suly S', 'Tere M', 'Zamy'
+            ];
+
+            const programas = [
+                'Agilidad mental', 'Aleatorio acciones', 'Aleatorio búsqueda de objetos', 'Aleatorio emociones',
+                'Aleatorio dictado números', 'Aleatorio ecoicas fonemas', 'Aleatorio intraverbales',
+                'Aleatorio ecoicas palabras', 'Aleatorio ecoicas sílabas', 'Aleatorio escolares',
+                'Aleatorio espejo', 'Aleatorio igualación auditiva', 'Aleatorio igualación 3D',
+                'Aleatorio imitación con objeto', 'Aleatorio imitación c/s objeto', 'Aleatorio imitación sin objeto',
+                'Aleatorio lectura comprensiva', 'Aleatorio lectura palabras', 'Aleatorio lectura silábica',
+                'Aleatorio partes del cuerpo', 'Aleatorio seguimiento instrucciones c/objeto',
+                'Aleatorio seguimiento instrucciones s/objeto', 'Aleatorio tactos animales',
+                'Aleatorio tactos comida', 'Aleatorio tactos letras', 'Aleatorio tactos números',
+                'Aleatorio tactos objetos', 'Aprestamiento', 'Asociaciones', 'Autonomía', 'Autoclíticos',
+                'Búsqueda de objetos', 'Categorías', 'Cálculo mental', 'Colorear', 'Comida', 'Computación',
+                'Conceptos matemáticos', 'Condicionamiento caras', 'Condicionamiento colorear',
+                'Condicionamiento encajables', 'Condicionamiento en mesa', 'Condicionamiento paleta',
+                'Condicionamiento juegos', 'Condicionamiento libros', 'Condicionamiento libros en el suelo',
+                'Condicionamiento plasticina', 'Condicionamiento saltar', 'Condicionamiento témperas',
+                'Condicionamiento rompecabezas', 'Contacto visual', 'Conteo', 'Control postural', 'Copia',
+                'Copia bisilábica', 'Corte de cabello', 'Deícticos', 'Deletreo', 'Dictado', 'Dictado letras',
+                'Dictado números', 'Dictado teclado', 'Dictado sílabas', 'Discriminación',
+                'Discriminación auditiva', 'Discriminación y lectura de palabras', 'Ecoica fonemas',
+                'Ecoica frases', 'Ecoica oraciones', 'Ecoica palabras', 'Ecoica secuencias', 'Ecoica sílabas',
+                'Entrenamiento a padres', 'Escritura', 'Espera', 'Esperar turno', 'Flexibilidad',
+                'Habilidades numéricas', 'Historias', 'Hojas de trabajo', 'Igualación 2D/2D', 'Igualación 2D/3D',
+                'Igualación 3D/3D', 'Igualación animales', 'Igualación auditiva', 'Igualación categorías',
+                'Igualación comida', 'Igualación de colores', 'Igualación letras', 'Igualación números',
+                'Igualación objetos', 'Igualación palabras', 'Igualación partes del cuerpo', 'Igualación sílabas',
+                'Igualación tactil', 'Igualación texto/foto', 'Imitación c/s objeto', 'Imitación con objeto',
+                'Imitación en espejo', 'Imitación sin objeto', 'Interacción juguetes', 'Interacción social',
+                'Intercambio de reforzadores', 'Intraverbales', 'Lavado de dientes', 'Lectura comprensiva',
+                'Lectura global', 'Lectura oraciones', 'Lectura palabras', 'Lectura silábica', 'Mandos',
+                'Mandos actividades', 'Mandos aversivos', 'Mandos comestibles', 'Mandos juguetes',
+                'Mandos otros lugares', 'Matemáticas', 'Motor', 'Motricidad fina', 'Multiplicaciones',
+                'Número/numeral', 'Opuestos', 'Oral motor', 'Partes del cuerpo', 'Praxias', 'Pre-escritura',
+                'Pre-escritura sílabas', 'Pre-lectura', 'Pronombres', 'Recortar', 'Reloj',
+                'Respuesta al nombre', 'Restas', 'Rimas', 'Rompecabezas', 'Secuencias',
+                'Seguimiento instrucciones c/s objeto', 'Seguimiento instrucciones con objeto',
+                'Seguimiento instrucciones escritas', 'Seguimiento instrucciones sin objeto',
+                'Seguimiento de instrucciones vocales', 'Selección 2D', 'Selección 3D', 'Selección acción',
+                'Selección animales', 'Selección colores', 'Selección comida', 'Selección con características',
+                'Selección escolares', 'Selección fonemas', 'Selección letras', 'Selección números',
+                'Selección objetos', 'Selección palabras', 'Selección partes del cuerpo', 'Selección sílabas',
+                'Selección varios', 'Señalar cuaderno', 'Sumas', 'Tacto acciones', 'Tacto animales',
+                'Tacto colores', 'Tacto comida', 'Tacto emociones', 'Tacto escolares', 'Tacto impuro números',
+                'Tacto letras', 'Tactos lugares', 'Tacto números', 'Tacto objetos', 'Tacto personas',
+                'Tacto profesiones', 'Tacto puro números', 'Tacto vestimenta', 'Tactos sensoriales',
+                'Tactos situaciones', 'Tactos varios', 'Tiempo Colegio', 'Toma de perspectiva',
+                'Tracking visual', 'Trazos', 'Vestido'
+            ];
+
+            const tiposAyuda = ['Ninguna', 'Verbal', 'Gestual', 'Física parcial', 'Física total', 'Física sombra'];
+            const tiposReforzador = ['Comestible', 'Sensorial', 'Social', 'Tangible', 'Economía', 'Actividad', 'Prueba/Test'];
+            const tiposReforzamiento = ['Continuo', 'Variable'];
+            const tiemposColegio = ['3:00:00', 'Selección varios', 'Señalar cuaderno', 'Sumas', 'Tacto acciones', 'Tacto animales',
+                'Tacto colores', 'Tacto comida', 'Tacto emociones', 'Tacto escolares', 'Tacto impuro números',
+                'Tacto letras', 'Tactos lugares', 'Tacto números', 'Tacto objetos', 'Tacto personas',
+                'Tacto profesiones', 'Tacto puro números', 'Tacto vestimenta', 'Tactos sensoriales',
+                'Tactos situaciones', 'Tactos varios', 'Tiempo Colegio', 'Toma de perspectiva',
+                'Tracking visual', 'Trazos', 'Vestido'
+            ];
+
+            const tiposAyuda = ['Ninguna', 'Verbal', 'Gestual', 'Física parcial', 'Física total', 'Física sombra'];
+            const tiposReforzador = ['Comestible', 'Sensorial', 'Social', 'Tangible', 'Economía', 'Actividad', 'Prueba/Test'];
+            const tiposReforzamiento = ['Continuo', 'Variable'];
+            const tiemposColegio = ['3:00:00', '3:30:00', '4:00:00', '4:30:00', '5:00:00'];
+
+            // Detectar conexión
+            useEffect(() => {
+                const handleOnline = () => setIsOnline(true);
+                const handleOffline = () => setIsOnline(false);
+                
+                window.addEventListener('online', handleOnline);
+                window.addEventListener('offline', handleOffline);
+                
+                // Cargar sesiones guardadas
+                const saved = localStorage.getItem('pendingSessions');
+                if (saved) {
+                    setSavedSessions(JSON.parse(saved));
+                }
+                
+                // PWA Install
+                let deferredPrompt;
+                const installButton = document.getElementById('installButton');
+                
+                window.addEventListener('beforeinstallprompt', (e) => {
+                    e.preventDefault();
+                    deferredPrompt = e;
+                    installButton.style.display = 'block';
+                });
+                
+                installButton.addEventListener('click', async () => {
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        deferredPrompt = null;
+                        installButton.style.display = 'none';
+                    }
+                });
+                
+                return () => {
+                    window.removeEventListener('online', handleOnline);
+                    window.removeEventListener('offline', handleOffline);
+                };
+            }, []);
+
+            const agregarPrograma = () => {
+                const nuevoPrograma = {
+                    id: Date.now(),
+                    programa: '',
+                    conjNivel: '',
+                    elementos: '',
+                    ensayosPositivos: '',
+                    ensayosNegativos: '',
+                    tiposAyuda: [],
+                    tiposReforzador: [],
+                    tipoReforzamiento: '',
+                    tiempoColegio: '',
+                    tiempoEntrenamientoPapas: '',
+                    comportamientoRelevante: '',
+                    comentario: ''
+                };
+                
+                setSessionData(prev => ({
+                    ...prev,
+                    programas: [...prev.programas, nuevoPrograma]
+                }));
+            };
+
+            const actualizarPrograma = (id, campo, valor) => {
+                setSessionData(prev => ({
+                    ...prev,
+                    programas: prev.programas.map(programa => 
+                        programa.id === id ? { ...programa, [campo]: valor } : programa
+                    )
+                }));
+            };
+
+            const actualizarArrayPrograma = (id, campo, item, checked) => {
+                setSessionData(prev => ({
+                    ...prev,
+                    programas: prev.programas.map(programa => {
+                        if (programa.id === id) {
+                            const array = programa[campo] || [];
+                            if (checked) {
+                                return { ...programa, [campo]: [...array, item] };
+                            } else {
+                                return { ...programa, [campo]: array.filter(i => i !== item) };
+                            }
+                        }
+                        return programa;
+                    })
+                }));
+            };
+
+            const eliminarPrograma = (id) => {
+                setSessionData(prev => ({
+                    ...prev,
+                    programas: prev.programas.filter(programa => programa.id !== id)
+                }));
+            };
+
+            const calcularTotales = (programa) => {
+                const positivos = parseInt(programa.ensayosPositivos) || 0;
+                const negativos = parseInt(programa.ensayosNegativos) || 0;
+                const total = positivos + negativos;
+                const porcentaje = total > 0 ? Math.round((positivos / total) * 100) : 0;
+                return { total, porcentaje };
+            };
+
+            const guardarSesion = () => {
+                if (!sessionData.terapeuta || !sessionData.nombre || sessionData.programas.length === 0) {
+                    alert('Por favor completa todos los campos obligatorios (terapeuta, nombre y al menos un programa)');
+                    return;
+                }
+
+                // Validar que cada programa tenga los campos obligatorios
+                for (const programa of sessionData.programas) {
+                    if (!programa.programa || !programa.conjNivel || !programa.elementos || 
+                        programa.ensayosPositivos === '' || programa.ensayosNegativos === '' ||
+                        programa.tiposAyuda.length === 0 || programa.tiposReforzador.length === 0 ||
+                        !programa.tipoReforzamiento) {
+                        alert('Por favor completa todos los campos obligatorios en cada programa');
+                        return;
+                    }
+                }
+
+                const nuevasSesiones = [...savedSessions, { ...sessionData, id: Date.now() }];
+                setSavedSessions(nuevasSesiones);
+                localStorage.setItem('pendingSessions', JSON.stringify(nuevasSesiones));
+                
+                // Limpiar formulario
+                setSessionData({
+                    fecha: new Date().toISOString().split('T')[0],
+                    terapeuta: '',
+                    nombre: '',
+                    programas: []
+                });
+                
+                alert('Sesión guardada localmente');
+            };
+
+            const enviarDatos = async () => {
+                if (savedSessions.length === 0) {
+                    alert('No hay sesiones pendientes para enviar');
+                    return;
+                }
+
+                try {
+                    // URL de tu Google Apps Script
+                    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwMXhSh10UNE2hohfjAnqDhNClKKOepQPAOyHbYPAt6kE_fvCrePSYmYxQvkOC-VnSS/exec';
+                    
+                    // Enviar cada sesión
+                    for (const sesion of savedSessions) {
+                        const response = await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(sesion)
+                        });
+                        
+                        const result = await response.json();
+                        if (!result.success) {
+                            throw new Error(result.error || 'Error desconocido');
+                        }
+                    }
+                    
+                    // Limpiar sesiones enviadas
+                    setSavedSessions([]);
+                    localStorage.removeItem('pendingSessions');
+                    
+                    alert(`${savedSessions.length} sesiones enviadas exitosamente a Google Sheets`);
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error al enviar datos. Se mantendrán guardados localmente.');
+                }
+            };
+
+            return (
+                <div className="min-h-screen bg-gray-50 p-4">
+                    <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg">
+                        {/* Header */}
+                        <div className="bg-blue-600 text-white p-4 rounded-t-lg">
+                            <div className="flex justify-between items-center">
+                                <h1 className="text-lg font-bold">Formulario ATRVT</h1>
+                                <div className="flex items-center gap-2">
+                                    {isOnline ? (
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                                        </svg>
+                                    ) : (
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636l-12.728 12.728m0-12.728l12.728 12.728" />
+                                        </svg>
+                                    )}
+                                    {savedSessions.length > 0 && (
+                                        <span className="bg-red-500 text-white text-xs px-2 py-1 rounded-full">
+                                            {savedSessions.length}
+                                        </span>
+                                    )}
+                                </div>
+                            </div>
+                            <p className="text-blue-100 text-sm mt-1">Registro de Sesiones</p>
+                        </div>
+
+                        <div className="p-4 space-y-4">
+                            {/* Datos básicos de la sesión */}
+                            <div className="bg-gray-50 p-3 rounded-lg space-y-3">
+                                <h3 className="font-medium text-gray-900">Datos de la Sesión</h3>
+                                
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Fecha *
+                                    </label>
+                                    <input
+                                        type="date"
+                                        value={sessionData.fecha}
+                                        onChange={(e) => setSessionData(prev => ({ ...prev, fecha: e.target.value }))}
+                                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Terapeuta *
+                                    </label>
+                                    <select
+                                        value={sessionData.terapeuta}
+                                        onChange={(e) => setSessionData(prev => ({ ...prev, terapeuta: e.target.value }))}
+                                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    >
+                                        <option value="">Seleccionar terapeuta</option>
+                                        {terapeutas.map(terapeuta => (
+                                            <option key={terapeuta} value={terapeuta}>{terapeuta}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Nombre *
+                                    </label>
+                                    <select
+                                        value={sessionData.nombre}
+                                        onChange={(e) => setSessionData(prev => ({ ...prev, nombre: e.target.value }))}
+                                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    >
+                                        <option value="">Seleccionar nombre</option>
+                                        {nombres.map(nombre => (
+                                            <option key={nombre} value={nombre}>{nombre}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+
+                            {/* Programas */}
+                            <div>
+                                <div className="flex justify-between items-center mb-3">
+                                    <h3 className="text-lg font-medium text-gray-900">Programas trabajados</h3>
+                                    <button
+                                        onClick={agregarPrograma}
+                                        className="bg-green-500 text-white p-2 rounded-full hover:bg-green-600 transition-colors"
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                {sessionData.programas.length === 0 && (
+                                    <p className="text-gray-500 text-center py-4">
+                                        No hay programas agregados. Toca + para agregar uno.
+                                    </p>
+                                )}
+
+                                {sessionData.programas.map((programa, index) => {
+                                    const { total, porcentaje } = calcularTotales(programa);
+                                    
+                                    return (
+                                        <div key={programa.id} className="border border-gray-300 rounded-md p-3 mb-4">
+                                            <div className="flex justify-between items-center mb-3">
+                                                <h4 className="font-medium text-gray-900">Programa {index + 1}</h4>
+                                                <button
+                                                    onClick={() => eliminarPrograma(programa.id)}
+                                                    className="text-red-500 hover:text-red-700"
+                                                >
+                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+
+                                            <div className="space-y-3">
+                                                {/* Programa */}
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Programa *</label>
+                                                    <select
+                                                        value={programa.programa}
+                                                        onChange={(e) => actualizarPrograma(programa.id, 'programa', e.target.value)}
+                                                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                    >
+                                                        <option value="">Seleccionar programa</option>
+                                                        {programas.map(prog => (
+                                                            <option key={prog} value={prog}>{prog}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+
+                                                {/* Conj/Nivel y Elementos */}
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    <div>
+                                                        <label className="block text-sm font-medium text-gray-700 mb-1">Conj/Nivel *</label>
+                                                        <input
+                                                            type="number"
+                                                            placeholder="Ej: 1"
+                                                            value={programa.conjNivel}
+                                                            onChange={(e) => actualizarPrograma(programa.id, 'conjNivel', e.target.value)}
+                                                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-medium text-gray-700 mb-1">Elementos *</label>
+                                                        <input
+                                                            type="number"
+                                                            placeholder="Ej: 20"
+                                                            value={programa.elementos}
+                                                            onChange={(e) => actualizarPrograma(programa.id, 'elementos', e.target.value)}
+                                                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                {/* Ensayos */}
+                                                <div className="grid grid-cols-2 gap-2">
+                                                    <div>
+                                                        <label className="block text-sm font-medium text-gray-700 mb-1">Ensayos + *</label>
+                                                        <input
+                                                            type="number"
+                                                            placeholder="Correctos"
+                                                            value={programa.ensayosPositivos}
+                                                            onChange={(e) => actualizarPrograma(programa.id, 'ensayosPositivos', e.target.value)}
+                                                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-sm font-medium text-gray-700 mb-1">Ensayos - *</label>
+                                                        <input
+                                                            type="number"
+                                                            placeholder="Incorrectos"
+                                                            value={programa.ensayosNegativos}
+                                                            onChange={(e) => actualizarPrograma(programa.id, 'ensayosNegativos', e.target.value)}
+                                                            className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                        />
+                                                    </div>
+                                                </div>
+
+                                                {/* Resultado automático */}
+                                                {(programa.ensayosPositivos !== '' && programa.ensayosNegativos !== '') && (
+                                                    <div className="bg-blue-50 p-2 rounded text-center">
+                                                        <div className="flex items-center justify-center gap-2">
+                                                            <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                                            </svg>
+                                                            <span className="text-blue-800 font-medium">
+                                                                Total: {total} ensayos - {porcentaje}% de aciertos
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                )}
+
+                                                {/* Tipo de Ayuda */}
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de Ayuda * (múltiple)</label>
+                                                    <div className="grid grid-cols-2 gap-1">
+                                                        {tiposAyuda.map(ayuda => (
+                                                            <label key={ayuda} className="flex items-center space-x-2">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={programa.tiposAyuda?.includes(ayuda) || false}
+                                                                    onChange={(e) => actualizarArrayPrograma(programa.id, 'tiposAyuda', ayuda, e.target.checked)}
+                                                                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                                                />
+                                                                <span className="text-sm">{ayuda}</span>
+                                                            </label>
+                                                        ))}
+                                                    </div>
+                                                </div>
+
+                                                {/* Tipo de Reforzador */}
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de Reforzador * (múltiple)</label>
+                                                    <div className="grid grid-cols-2 gap-1">
+                                                        {tiposReforzador.map(reforzador => (
+                                                            <label key={reforzador} className="flex items-center space-x-2">
+                                                                <input
+                                                                    type="checkbox"
+                                                                    checked={programa.tiposReforzador?.includes(reforzador) || false}
+                                                                    onChange={(e) => actualizarArrayPrograma(programa.id, 'tiposReforzador', reforzador, e.target.checked)}
+                                                                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                                                                />
+                                                                <span className="text-sm">{reforzador}</span>
+                                                            </label>
+                                                        ))}
+                                                    </div>
+                                                </div>
+
+                                                {/* Tipo de Reforzamiento */}
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-2">Tipo de Reforzamiento *</label>
+                                                    <div className="flex gap-4">
+                                                        {tiposReforzamiento.map(tipo => (
+                                                            <label key={tipo} className="flex items-center space-x-2">
+                                                                <input
+                                                                    type="radio"
+                                                                    name={`reforzamiento-${programa.id}`}
+                                                                    value={tipo}
+                                                                    checked={programa.tipoReforzamiento === tipo}
+                                                                    onChange={(e) => actualizarPrograma(programa.id, 'tipoReforzamiento', e.target.value)}
+                                                                    className="text-blue-600 focus:ring-blue-500"
+                                                                />
+                                                                <span className="text-sm">{tipo}</span>
+                                                            </label>
+                                                        ))}
+                                                    </div>
+                                                </div>
+
+                                                {/* Tiempo en Colegio */}
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Tiempo en Colegio</label>
+                                                    <select
+                                                        value={programa.tiempoColegio}
+                                                        onChange={(e) => actualizarPrograma(programa.id, 'tiempoColegio', e.target.value)}
+                                                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                    >
+                                                        <option value="">Seleccionar tiempo</option>
+                                                        {tiemposColegio.map(tiempo => (
+                                                            <option key={tiempo} value={tiempo}>{tiempo}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+
+                                                {/* Tiempo Entrenamiento Papás */}
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Tiempo Entrenamiento Papás</label>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Ej: 30 minutos"
+                                                        value={programa.tiempoEntrenamientoPapas}
+                                                        onChange={(e) => actualizarPrograma(programa.id, 'tiempoEntrenamientoPapas', e.target.value)}
+                                                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                    />
+                                                </div>
+
+                                                {/* Comportamiento Relevante */}
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Comportamiento Relevante</label>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Cualquier comportamiento relevante..."
+                                                        value={programa.comportamientoRelevante}
+                                                        onChange={(e) => actualizarPrograma(programa.id, 'comportamientoRelevante', e.target.value)}
+                                                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                                    />
+                                                </div>
+
+                                                {/* Comentario */}
+                                                <div>
+                                                    <label className="block text-sm font-medium text-gray-700 mb-1">Comentario</label>
+                                                    <textarea
+                                                        placeholder="Breve comentario clínico de la sesión..."
+                                                        value={programa.comentario}
+                                                        onChange={(e) => actualizarPrograma(programa.id, 'comentario', e.target.value)}
+                                                        className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                                                        rows="3"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+
+                            {/* Botones de acción */}
+                            <div className="flex gap-2 pt-4">
+                                <button
+                                    onClick={guardarSesion}
+                                    className="flex-1 bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                                >
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                                    </svg>
+                                    Guardar Sesión
+                                </button>
+                                
+                                {savedSessions.length > 0 && (
+                                    <button
+                                        onClick={enviarDatos}
+                                        disabled={!isOnline}
+                                        className={`flex-1 py-3 px-4 rounded-md transition-colors flex items-center justify-center gap-2 ${
+                                            isOnline 
+                                                ? 'bg-green-600 text-white hover:bg-green-700' 
+                                                : 'bg-gray-400 text-gray-200 cursor-not-allowed'
+                                        }`}
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                                        </svg>
+                                        Enviar ({savedSessions.length})
+                                    </button>
+                                )}
+                            </div>
+
+                            {/* Status */}
+                            <div className="text-center text-sm text-gray-600">
+                                {isOnline ? (
+                                    <span className="text-green-600 flex items-center justify-center gap-1">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                                        </svg>
+                                        Conectado - Los datos se pueden enviar
+                                    </span>
+                                ) : (
+                                    <span className="text-orange-600 flex items-center justify-center gap-1">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636l-12.728 12.728m0-12.728l12.728 12.728" />
+                                        </svg>
+                                        Sin conexión - Los datos se guardan localmente
+                                    </span>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<TherapySessionApp />, document.getElementById('root'));
+    </script>
+
+    <script>
+        // Registrar service worker para PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript;base64,Ly8gU2VydmljZSBXb3JrZXIgYsOhc2ljbyBwYXJhIFBXQQpzZWxmLmFkZEV2ZW50TGlzdGVuZXIoJ2luc3RhbGwnLCAoZXZlbnQpID0+IHsKICBjb25zb2xlLmxvZygnU2VydmljZSBXb3JrZXIgaW5zdGFsYWRvJyk7Cn0pOwoKc2VsZi5hZGRFdmVudExpc3RlbmVyKCdmZXRjaCcsIChldmVudCkgPT4gewogIC8vIFBhc2FyIHRvZGFzIGxhcyBzb2xpY2l0dWRlcyBkaXJlY3RhbWVudGUKICBldmVudC5yZXNwb25kV2l0aChmZXRjaChldmVudC5yZXF1ZXN0KSk7Cn0pOw==')
+            .then(() => console.log('Service Worker registrado'))
+            .catch(err => console.log('Error registrando Service Worker:', err));
+        }
+    </script>
+</body>
+</html>
