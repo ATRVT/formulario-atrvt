@@ -81,25 +81,6 @@
                         class="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 bg-white"
                     >
                         <option value="">Seleccionar terapeuta</option>
-                        <option value="Adriana J">Adriana J</option>
-                        <option value="Celeste M">Celeste M</option>
-                        <option value="Cinthia">Cinthia</option>
-                        <option value="Dani R">Dani R</option>
-                        <option value="Estefanie">Estefanie</option>
-                        <option value="Gaby A">Gaby A</option>
-                        <option value="Gaby X">Gaby X</option>
-                        <option value="Geovanna">Geovanna</option>
-                        <option value="Jacky S">Jacky S</option>
-                        <option value="Jessi G">Jessi G</option>
-                        <option value="Jessica P">Jessica P</option>
-                        <option value="Luisa D">Luisa D</option>
-                        <option value="Melissa P">Melissa P</option>
-                        <option value="Meli Peña">Meli Peña</option>
-                        <option value="Paty">Paty</option>
-                        <option value="Rocío M">Rocío M</option>
-                        <option value="Suly S">Suly S</option>
-                        <option value="Tere M">Tere M</option>
-                        <option value="Zamy">Zamy</option>
                     </select>
                 </div>
 
@@ -110,48 +91,6 @@
                         class="w-full px-3 py-2.5 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 bg-white"
                     >
                         <option value="">Seleccionar estudiante</option>
-                        <option value="Abraham Chapetón">Abraham Chapetón</option>
-                        <option value="Adolfo Hernández">Adolfo Hernández</option>
-                        <option value="Adrián">Adrián</option>
-                        <option value="Adriana García">Adriana García</option>
-                        <option value="Amber Lafage">Amber Lafage</option>
-                        <option value="Ana María">Ana María</option>
-                        <option value="Andrei González">Andrei González</option>
-                        <option value="Andrés Cruz">Andrés Cruz</option>
-                        <option value="Ángel Gabriel">Ángel Gabriel</option>
-                        <option value="Ángel Gudiel">Ángel Gudiel</option>
-                        <option value="Bruno Arévalo">Bruno Arévalo</option>
-                        <option value="Bruno Torres">Bruno Torres</option>
-                        <option value="Christopher Gamas">Christopher Gamas</option>
-                        <option value="Cristian Molina">Cristian Molina</option>
-                        <option value="Daniel Samayoa">Daniel Samayoa</option>
-                        <option value="Diego Lima">Diego Lima</option>
-                        <option value="Diego Pérez">Diego Pérez</option>
-                        <option value="Dylan Ceijas">Dylan Ceijas</option>
-                        <option value="Ethan Forno">Ethan Forno</option>
-                        <option value="Fabián Álvarez">Fabián Álvarez</option>
-                        <option value="Gabriel Ruíz">Gabriel Ruíz</option>
-                        <option value="Ivanna Recinos">Ivanna Recinos</option>
-                        <option value="Javier Maldonado">Javier Maldonado</option>
-                        <option value="Jorge Sánchez">Jorge Sánchez</option>
-                        <option value="José Miguel López">José Miguel López</option>
-                        <option value="Julio González">Julio González</option>
-                        <option value="Luis André Arriola">Luis André Arriola</option>
-                        <option value="Luis Felipe Guzmán">Luis Felipe Guzmán</option>
-                        <option value="Mariana Solís">Mariana Solís</option>
-                        <option value="Mateo Toribio">Mateo Toribio</option>
-                        <option value="Mathías Mendoza">Mathías Mendoza</option>
-                        <option value="Matías Contreras">Matías Contreras</option>
-                        <option value="Matías Guaré">Matías Guaré</option>
-                        <option value="Matías Osorio">Matías Osorio</option>
-                        <option value="Miranda Martínez">Miranda Martínez</option>
-                        <option value="Nicholas Mancilla">Nicholas Mancilla</option>
-                        <option value="Pablo Vielman">Pablo Vielman</option>
-                        <option value="René Torres">René Torres</option>
-                        <option value="Rodrigo Chigüichon">Rodrigo Chigüichon</option>
-                        <option value="Santiago Ruíz">Santiago Ruíz</option>
-                        <option value="Tier Xitumul">Tier Xitumul</option>
-                        <option value="Xander García">Xander García</option>
                     </select>
                 </div>
             </div>
@@ -277,25 +216,6 @@
             tiposReforzador: ["Comestible", "Sensorial", "Social", "Tangible", "Economía", "Actividad", "Prueba/Test"]
         };
 
-        // Cargar configuración desde localStorage
-        function cargarConfig() {
-            try {
-                const configGuardada = JSON.parse(localStorage.getItem('atrvt_config') || '{}');
-                config = { ...config, ...configGuardada };
-            } catch (e) {
-                console.log('Config por defecto');
-            }
-        }
-
-        // Guardar configuración
-        function guardarConfig() {
-            try {
-                localStorage.setItem('atrvt_config', JSON.stringify(config));
-            } catch (e) {
-                console.log('No se pudo guardar config');
-            }
-        }
-
         // Variables globales
         let programasAgregados = [];
         let contadorProgramas = 0;
@@ -316,6 +236,25 @@
         const cerrarModal = document.getElementById('cerrarModal');
         const guardarConfigBtn = document.getElementById('guardarConfig');
         const cancelarConfigBtn = document.getElementById('cancelarConfig');
+
+        // Cargar configuración desde localStorage
+        function cargarConfig() {
+            try {
+                const configGuardada = JSON.parse(localStorage.getItem('atrvt_config') || '{}');
+                config = { ...config, ...configGuardada };
+            } catch (e) {
+                console.log('Config por defecto');
+            }
+        }
+
+        // Guardar configuración
+        function guardarConfig() {
+            try {
+                localStorage.setItem('atrvt_config', JSON.stringify(config));
+            } catch (e) {
+                console.log('No se pudo guardar config');
+            }
+        }
 
         // Funciones
         function inicializar() {
@@ -346,16 +285,19 @@
         }
 
         function crearCheckboxGroup(nombre, opciones, idPrograma) {
-            return `
-                <div class="space-y-2 max-h-32 overflow-y-auto border border-gray-200 rounded-md p-2 bg-gray-50">
-                    ${opciones.map(opcion => `
-                        <label class="checkbox-option flex items-center p-2 rounded cursor-pointer hover:bg-gray-100">
-                            <input type="checkbox" name="${nombre}_${idPrograma}" value="${opcion}" class="mr-2 text-blue-600 focus:ring-blue-500 rounded">
-                            <span class="text-sm text-gray-700 flex-1 px-2 py-1 rounded border border-transparent">${opcion}</span>
-                        </label>
-                    `).join('')}
-                </div>
-            `;
+            let html = '<div class="space-y-2 max-h-32 overflow-y-auto border border-gray-200 rounded-md p-2 bg-gray-50">';
+            
+            opciones.forEach(opcion => {
+                html += `
+                    <label class="checkbox-option flex items-center p-2 rounded cursor-pointer hover:bg-gray-100">
+                        <input type="checkbox" name="${nombre}_${idPrograma}" value="${opcion}" class="mr-2 text-blue-600 focus:ring-blue-500 rounded">
+                        <span class="text-sm text-gray-700 flex-1 px-2 py-1 rounded border border-transparent">${opcion}</span>
+                    </label>
+                `;
+            });
+            
+            html += '</div>';
+            return html;
         }
 
         function agregarPrograma() {
@@ -366,6 +308,9 @@
             programaDiv.className = 'bg-gray-50 rounded-lg p-4 programa-card border';
             programaDiv.id = programaId;
 
+            const ayudaCheckboxes = crearCheckboxGroup('ayuda', config.tiposAyuda, contadorProgramas);
+            const reforzadorCheckboxes = crearCheckboxGroup('reforzador', config.tiposReforzador, contadorProgramas);
+
             programaDiv.innerHTML = `
                 <div class="flex justify-between items-center mb-3">
                     <h4 class="font-medium text-gray-900">Programa ${contadorProgramas}</h4>
@@ -373,6 +318,80 @@
                 </div>
                 
                 <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Programa</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 bg-white programa-select">
+                            <option value="">Seleccionar programa</option>
+                            ${config.programas.map(programa => `<option value="${programa}">${programa}</option>`).join('')}
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Conj/Nivel</label>
+                            <input type="number" placeholder="1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 conjnivel-input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Elementos</label>
+                            <input type="number" placeholder="20" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 elementos-input">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Ensayos correctos</label>
+                            <input type="number" placeholder="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 positivos-input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Ensayos incorrectos</label>
+                            <input type="number" placeholder="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 negativos-input">
+                        </div>
+                    </div>
+
+                    <div class="resultado bg-blue-50 border border-blue-200 rounded-md p-3 text-center hidden">
+                        <div class="resultado-texto text-blue-800 font-medium"></div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tipos de ayuda</label>
+                            ${ayudaCheckboxes}
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tipos de reforzador</label>
+                            ${reforzadorCheckboxes}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de reforzamiento</label>
+                        <div class="flex gap-6">
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Continuo" class="mr-2 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">Continuo</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Variable" class="mr-2 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">Variable</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Prueba/Test" class="mr-2 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">Prueba/Test</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tiempo colegio (min)</label>
+                            <input type="number" placeholder="30" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 tiempo-colegio-input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tiempo papás (min)</label>
+                            <input type="number" placeholder="15" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 tiempo-papas-input">
+                        </div>
+                    </div>
+
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Comportamiento relevante</label>
                         <textarea placeholder="Describir comportamientos relevantes..." rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 resize-none comportamiento-textarea"></textarea>
@@ -678,78 +697,5 @@
         inicializar();
     </script>
 </body>
-</html>sm font-medium text-gray-700 mb-1">Programa</label>
-                        <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 bg-white programa-select">
-                            <option value="">Seleccionar programa</option>
-                            ${config.programas.map(programa => `<option value="${programa}">${programa}</option>`).join('')}
-                        </select>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Conj/Nivel</label>
-                            <input type="number" placeholder="1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 conjnivel-input">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Elementos</label>
-                            <input type="number" placeholder="20" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 elementos-input">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Ensayos correctos</label>
-                            <input type="number" placeholder="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 positivos-input">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Ensayos incorrectos</label>
-                            <input type="number" placeholder="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 negativos-input">
-                        </div>
-                    </div>
-
-                    <div class="resultado bg-blue-50 border border-blue-200 rounded-md p-3 text-center hidden">
-                        <div class="resultado-texto text-blue-800 font-medium"></div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Tipos de ayuda</label>
-                            ${crearCheckboxGroup('ayuda', config.tiposAyuda, contadorProgramas)}
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Tipos de reforzador</label>
-                            ${crearCheckboxGroup('reforzador', config.tiposReforzador, contadorProgramas)}
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de reforzamiento</label>
-                        <div class="flex gap-6">
-                            <label class="flex items-center cursor-pointer">
-                                <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Continuo" class="mr-2 text-blue-600 focus:ring-blue-500">
-                                <span class="text-sm text-gray-700">Continuo</span>
-                            </label>
-                            <label class="flex items-center cursor-pointer">
-                                <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Variable" class="mr-2 text-blue-600 focus:ring-blue-500">
-                                <span class="text-sm text-gray-700">Variable</span>
-                            </label>
-                            <label class="flex items-center cursor-pointer">
-                                <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Prueba/Test" class="mr-2 text-blue-600 focus:ring-blue-500">
-                                <span class="text-sm text-gray-700">Prueba/Test</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Tiempo colegio (min)</label>
-                            <input type="number" placeholder="30" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 tiempo-colegio-input">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Tiempo papás (min)</label>
-                            <input type="number" placeholder="15" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 tiempo-papas-input">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-
+</html>
+                
