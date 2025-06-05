@@ -29,6 +29,16 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
+        .checkbox-option {
+            transition: all 0.2s ease;
+        }
+        .checkbox-option:hover {
+            background-color: #f8fafc;
+        }
+        .checkbox-option input:checked + span {
+            background-color: #dbeafe;
+            border-color: #2563eb;
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -262,7 +272,9 @@
             ],
             terapeutas: ["Adriana J", "Celeste M", "Cinthia", "Dani R", "Estefanie", "Gaby A", "Gaby X", "Geovanna", "Jacky S", "Jessi G", "Jessica P", "Luisa D", "Melissa P", "Meli Peña", "Paty", "Rocío M", "Suly S", "Tere M", "Zamy"],
             estudiantes: ["Abraham Chapetón", "Adolfo Hernández", "Adrián", "Adriana García", "Amber Lafage", "Ana María", "Andrei González", "Andrés Cruz", "Ángel Gabriel", "Ángel Gudiel", "Bruno Arévalo", "Bruno Torres", "Christopher Gamas", "Cristian Molina", "Daniel Samayoa", "Diego Lima", "Diego Pérez", "Dylan Ceijas", "Ethan Forno", "Fabián Álvarez", "Gabriel Ruíz", "Ivanna Recinos", "Javier Maldonado", "Jorge Sánchez", "José Miguel López", "Julio González", "Luis André Arriola", "Luis Felipe Guzmán", "Mariana Solís", "Mateo Toribio", "Mathías Mendoza", "Matías Contreras", "Matías Guaré", "Matías Osorio", "Miranda Martínez", "Nicholas Mancilla", "Pablo Vielman", "René Torres", "Rodrigo Chigüichon", "Santiago Ruíz", "Tier Xitumul", "Xander García"],
-            tiposReforzamiento: ["Continuo", "Variable", "Prueba/Test"]
+            tiposReforzamiento: ["Continuo", "Variable", "Prueba/Test"],
+            tiposAyuda: ["Ninguna", "Verbal", "Gestual", "Física parcial", "Física total", "Física sombra"],
+            tiposReforzador: ["Comestible", "Sensorial", "Social", "Tangible", "Economía", "Actividad", "Prueba/Test"]
         };
 
         // Cargar configuración desde localStorage
@@ -333,6 +345,19 @@
             });
         }
 
+        function crearCheckboxGroup(nombre, opciones, idPrograma) {
+            return `
+                <div class="space-y-2 max-h-32 overflow-y-auto border border-gray-200 rounded-md p-2 bg-gray-50">
+                    ${opciones.map(opcion => `
+                        <label class="checkbox-option flex items-center p-2 rounded cursor-pointer hover:bg-gray-100">
+                            <input type="checkbox" name="${nombre}_${idPrograma}" value="${opcion}" class="mr-2 text-blue-600 focus:ring-blue-500 rounded">
+                            <span class="text-sm text-gray-700 flex-1 px-2 py-1 rounded border border-transparent">${opcion}</span>
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+        }
+
         function agregarPrograma() {
             contadorProgramas++;
             const programaId = `programa_${contadorProgramas}`;
@@ -348,97 +373,6 @@
                 </div>
                 
                 <div class="space-y-3">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Programa</label>
-                        <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 bg-white programa-select">
-                            <option value="">Seleccionar programa</option>
-                            ${config.programas.map(programa => `<option value="${programa}">${programa}</option>`).join('')}
-                        </select>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Conj/Nivel</label>
-                            <input type="number" placeholder="1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 conjnivel-input">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Elementos</label>
-                            <input type="number" placeholder="20" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 elementos-input">
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Ensayos correctos</label>
-                            <input type="number" placeholder="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 positivos-input">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Ensayos incorrectos</label>
-                            <input type="number" placeholder="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 negativos-input">
-                        </div>
-                    </div>
-
-                    <div class="resultado bg-blue-50 border border-blue-200 rounded-md p-3 text-center hidden">
-                        <div class="resultado-texto text-blue-800 font-medium"></div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de ayuda</label>
-                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 bg-white ayuda-select">
-                                <option value="">Seleccionar</option>
-                                <option value="Ninguna">Ninguna</option>
-                                <option value="Verbal">Verbal</option>
-                                <option value="Gestual">Gestual</option>
-                                <option value="Física parcial">Física parcial</option>
-                                <option value="Física total">Física total</option>
-                                <option value="Física sombra">Física sombra</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Tipo de reforzador</label>
-                            <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 bg-white reforzador-select">
-                                <option value="">Seleccionar</option>
-                                <option value="Comestible">Comestible</option>
-                                <option value="Sensorial">Sensorial</option>
-                                <option value="Social">Social</option>
-                                <option value="Tangible">Tangible</option>
-                                <option value="Economía">Economía</option>
-                                <option value="Actividad">Actividad</option>
-                                <option value="Prueba/Test">Prueba/Test</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de reforzamiento</label>
-                        <div class="flex gap-6">
-                            <label class="flex items-center cursor-pointer">
-                                <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Continuo" class="mr-2 text-blue-600 focus:ring-blue-500">
-                                <span class="text-sm text-gray-700">Continuo</span>
-                            </label>
-                            <label class="flex items-center cursor-pointer">
-                                <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Variable" class="mr-2 text-blue-600 focus:ring-blue-500">
-                                <span class="text-sm text-gray-700">Variable</span>
-                            </label>
-                            <label class="flex items-center cursor-pointer">
-                                <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Prueba/Test" class="mr-2 text-blue-600 focus:ring-blue-500">
-                                <span class="text-sm text-gray-700">Prueba/Test</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Tiempo colegio (min)</label>
-                            <input type="number" placeholder="30" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 tiempo-colegio-input">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Tiempo papás (min)</label>
-                            <input type="number" placeholder="15" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 tiempo-papas-input">
-                        </div>
-                    </div>
-
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Comportamiento relevante</label>
                         <textarea placeholder="Describir comportamientos relevantes..." rows="2" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 resize-none comportamiento-textarea"></textarea>
@@ -499,12 +433,18 @@
             }
         }
 
+        function obtenerCheckboxesSeleccionados(programaDiv, nombre, numeroPrograma) {
+            const checkboxes = programaDiv.querySelectorAll(`input[name="${nombre}_${numeroPrograma}"]:checked`);
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+
         function recopilarProgramas() {
             const programas = [];
             const programaDivs = programasContainer.querySelectorAll('.programa-card');
             
             programaDivs.forEach((div, index) => {
                 const tipoReforzamiento = div.querySelector(`input[name^="tipoReforzamiento"]:checked`);
+                const numeroPrograma = index + 1;
                 
                 const programa = {
                     id: Date.now() + index,
@@ -513,8 +453,8 @@
                     elementos: div.querySelector('.elementos-input').value,
                     ensayosPositivos: div.querySelector('.positivos-input').value,
                     ensayosNegativos: div.querySelector('.negativos-input').value,
-                    tiposAyuda: [div.querySelector('.ayuda-select').value],
-                    tiposReforzador: [div.querySelector('.reforzador-select').value],
+                    tiposAyuda: obtenerCheckboxesSeleccionados(div, 'ayuda', numeroPrograma),
+                    tiposReforzador: obtenerCheckboxesSeleccionados(div, 'reforzador', numeroPrograma),
                     tipoReforzamiento: tipoReforzamiento ? tipoReforzamiento.value : '',
                     tiempoColegio: div.querySelector('.tiempo-colegio-input').value,
                     tiempoEntrenamientoPapas: div.querySelector('.tiempo-papas-input').value,
@@ -539,8 +479,8 @@
                 const prog = programas[i];
                 if (!prog.programa || !prog.conjNivel || !prog.elementos || 
                     prog.ensayosPositivos === '' || prog.ensayosNegativos === '' ||
-                    !prog.tiposAyuda[0] || !prog.tiposReforzador[0] || !prog.tipoReforzamiento) {
-                    alert(`Por favor complete todos los campos del Programa ${i + 1}`);
+                    prog.tiposAyuda.length === 0 || prog.tiposReforzador.length === 0 || !prog.tipoReforzamiento) {
+                    alert(`Por favor complete todos los campos del Programa ${i + 1}. Debe seleccionar al menos un tipo de ayuda y un tipo de reforzador.`);
                     return false;
                 }
             }
@@ -565,13 +505,15 @@
                 primerPrograma.querySelector('.elementos-input').value = '';
                 primerPrograma.querySelector('.positivos-input').value = '';
                 primerPrograma.querySelector('.negativos-input').value = '';
-                primerPrograma.querySelector('.ayuda-select').value = '';
-                primerPrograma.querySelector('.reforzador-select').value = '';
                 primerPrograma.querySelector('.tiempo-colegio-input').value = '';
                 primerPrograma.querySelector('.tiempo-papas-input').value = '';
                 primerPrograma.querySelector('.comportamiento-textarea').value = '';
                 primerPrograma.querySelector('.comentario-textarea').value = '';
+                
+                // Desmarcar todos los checkboxes
+                primerPrograma.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
                 primerPrograma.querySelectorAll('input[type="radio"]').forEach(radio => radio.checked = false);
+                
                 const resultadoDiv = primerPrograma.querySelector('.resultado');
                 if (resultadoDiv) resultadoDiv.classList.add('hidden');
             }
@@ -683,18 +625,18 @@
             statusText.textContent = 'Enviando datos...';
 
             try {
-    const response = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(sesion)
-    });
-    
-    // Con no-cors asumimos que funcionó
-    console.log('Datos enviados');
-    limpiarFormulario();
-    statusText.textContent = 'Sesión enviada correctamente';
-    alert('Sesión enviada correctamente');
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(sesion)
+                });
+                
+                // Con no-cors asumimos que funcionó
+                console.log('Datos enviados');
+                limpiarFormulario();
+                statusText.textContent = 'Sesión enviada correctamente';
+                alert('Sesión enviada correctamente');
                 
             } catch (error) {
                 console.error('Error:', error);
@@ -736,4 +678,78 @@
         inicializar();
     </script>
 </body>
-</html>
+</html>sm font-medium text-gray-700 mb-1">Programa</label>
+                        <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 bg-white programa-select">
+                            <option value="">Seleccionar programa</option>
+                            ${config.programas.map(programa => `<option value="${programa}">${programa}</option>`).join('')}
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Conj/Nivel</label>
+                            <input type="number" placeholder="1" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 conjnivel-input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Elementos</label>
+                            <input type="number" placeholder="20" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 elementos-input">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Ensayos correctos</label>
+                            <input type="number" placeholder="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 positivos-input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Ensayos incorrectos</label>
+                            <input type="number" placeholder="0" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 negativos-input">
+                        </div>
+                    </div>
+
+                    <div class="resultado bg-blue-50 border border-blue-200 rounded-md p-3 text-center hidden">
+                        <div class="resultado-texto text-blue-800 font-medium"></div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tipos de ayuda</label>
+                            ${crearCheckboxGroup('ayuda', config.tiposAyuda, contadorProgramas)}
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tipos de reforzador</label>
+                            ${crearCheckboxGroup('reforzador', config.tiposReforzador, contadorProgramas)}
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de reforzamiento</label>
+                        <div class="flex gap-6">
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Continuo" class="mr-2 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">Continuo</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Variable" class="mr-2 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">Variable</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="radio" name="tipoReforzamiento_${contadorProgramas}" value="Prueba/Test" class="mr-2 text-blue-600 focus:ring-blue-500">
+                                <span class="text-sm text-gray-700">Prueba/Test</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tiempo colegio (min)</label>
+                            <input type="number" placeholder="30" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 tiempo-colegio-input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Tiempo papás (min)</label>
+                            <input type="number" placeholder="15" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none input-focus transition-all duration-200 tiempo-papas-input">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-
