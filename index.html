@@ -595,6 +595,7 @@
             
             if (nuevoItem && !config[configKey].includes(nuevoItem)) {
                 config[configKey].push(nuevoItem);
+                config[configKey].sort();
                 input.value = '';
                 actualizarListaItems(configKey);
             }
